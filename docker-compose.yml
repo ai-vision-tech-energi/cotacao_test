@@ -1,25 +1,39 @@
 version: '3.9'
 
 services:
+
   db:
     image: postgres
-    container_name: pg
+    container_name: pg_invest
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-
+      - ./postgres_data:/var/lib/postgresql/data_invest/
+    expose:
+      - "5432"
     restart: always
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-
     ports: 
       - "5432:5432"
+    networks:
+      - invest-db
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "solcaoprogramer@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "kiko7000"
+    ports:
+      - "16543:80"
+    depends_on:
+      - db
+    networks:
+      - invest-db
   
   web:
     build: .
     container_name: web-app-cotacoes
-    restart: always
     volumes:
       - .:/code
     env_file:
@@ -29,6 +43,12 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - invest-db
+
+networks: 
+  invest-db:
+    driver: bridge
 
 volumes: 
   postgres_data:

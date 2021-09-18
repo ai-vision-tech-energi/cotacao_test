@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     # My apps
-
+    'apps.user',
+    'apps.cotacoes'
 ]
 
 MIDDLEWARE = [
@@ -91,10 +92,10 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 ##    }
 ##}
 ##
-
+##
 DATABASES = {
   "default": {
-    "ENGINE": config("ENGINE"),
+    "ENGINE": 'django.db.backends.postgresql',
     "NAME": config("DATABASE"),
     "USER": config("USER"),
     "PASSWORD": config("PASSWORD"),
@@ -152,3 +153,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Default user model
+AUTH_USER_MODEL = 'user.User'
